@@ -1,0 +1,7 @@
+starter_files/test_map
+starter_files/test_map_tsan
+starter_files/test_locks
+starter_files/test_locks_tsan
+starter_files/bench
+*.o
+lab1.tgz

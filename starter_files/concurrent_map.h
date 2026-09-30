@@ -33,6 +33,7 @@
 #include <map>
 #include <mutex>
 #include <vector>
+#include <stdexcept>
 
 #include "interface.h"
 
@@ -80,5 +81,6 @@ private:
 };
  
 // Part 4: ShardedMap 
+
 
 #endif /* CONCURRENT_MAP_H */

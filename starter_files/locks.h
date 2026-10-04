@@ -180,4 +180,146 @@ class ParkingLock{
 };
 
 
+class RWLock{
+    private:
+        std::atomic<int> state_{0};
+    public:
+
+        //reader: CAS n -> n+1, but only while no writer holds it (n >= 0)
+
+        void lock_shared(){ //reader enters
+
+            unsigned backoff = 1;
+            constexpr unsigned max_backoff = 64;
+
+            for(;;){
+                int s = state_.load(std::memory_order_relaxed); //check the current state
+ 
+                //a  writer holds the state, wait for now until it's done 
+                while(s < 0){
+                    lab_spin_pause();
+                    s = state_.load(std::memory_order_relaxed);
+                }
+ 
+                //if it's still s, add one for us and we are in
+                if(state_.compare_exchange_weak(s, s + 1, std::memory_order_acquire, std::memory_order_relaxed)){
+                    return;
+                }
+ 
+                //we lost the race, not the expected s(another reader moved the count, or a writer got in) so we wait
+                for(unsigned i = 0; i < backoff; ++i){
+                    lab_spin_pause();
+                }
+                if(backoff < max_backoff){
+                    backoff *= 2; //wait a bit longer each time
+                }
+            }
+        }
+ 
+        void unlock_shared(){ //reader leaves
+            //release: this reader's reads finish before a writer can enter
+            state_.fetch_sub(1, std::memory_order_release);
+        }
+ 
+        //writer: CAS 0 -> -1, only when nobody (reader or writer) holds it
+        void lock(){
+            unsigned backoff = 1;
+            constexpr unsigned max_backoff = 64;
+ 
+            for(;;){
+                //wait until the lock looks completely free
+                while(state_.load(std::memory_order_relaxed) != 0){
+                    lab_spin_pause();
+                }
+ 
+                int expected = 0; //got to the lock
+                if(state_.compare_exchange_weak(expected, -1, std::memory_order_acquire, std::memory_order_relaxed)){
+                    return;
+                }
+ 
+                for(unsigned i = 0; i < backoff; ++i){
+                    lab_spin_pause();
+                }
+                if(backoff < max_backoff){
+                    backoff *= 2;
+                }
+            }
+        }
+ 
+        void unlock(){ //writer leaves
+            state_.store(0, std::memory_order_release);
+        }
+};
+
+class RWLockWP{ //this is writer preferring
+    private:
+        std::atomic<int> state_{0};             //-1 = writer, n >= 0 means n readers
+        std::atomic<int> waiting_writers_{0};   //writers that want in but don't hold the lock just yet
+ 
+    public:
+        void lock_shared(){
+            unsigned backoff = 1;
+            constexpr unsigned max_backoff = 64;
+ 
+            for(;;){
+                //defer to waiting writers but don't even try while one is queued
+                while(waiting_writers_.load(std::memory_order_relaxed) > 0){
+                    lab_spin_pause();
+                }
+ 
+                int s = state_.load(std::memory_order_relaxed);
+                if(s >= 0 &&
+                   state_.compare_exchange_weak(s, s + 1, std::memory_order_acquire, std::memory_order_relaxed)){
+                    return;
+                }
+ 
+                for(unsigned i = 0; i < backoff; ++i){
+                    lab_spin_pause();
+                }
+                if(backoff < max_backoff){
+                    backoff *= 2;
+                }
+            }
+        }
+ 
+        void unlock_shared(){
+            state_.fetch_sub(1, std::memory_order_release);
+        }
+ 
+        void lock(){
+            //announce ourselves first, so new readers stop entering
+            waiting_writers_.fetch_add(1, std::memory_order_relaxed);
+ 
+            unsigned backoff = 1;
+            constexpr unsigned max_backoff = 64;
+ 
+            for(;;){
+                //existing readers drain; no new ones arrive while we are waiting
+                while(state_.load(std::memory_order_relaxed) != 0){
+                    lab_spin_pause();
+                }
+ 
+                int expected = 0;
+                if(state_.compare_exchange_weak(expected, -1, std::memory_order_acquire, std::memory_order_relaxed)){
+                    break;
+                }
+ 
+                for(unsigned i = 0; i < backoff; ++i){
+                    lab_spin_pause();
+                }
+                if(backoff < max_backoff){
+                    backoff *= 2;
+                }
+            }
+ 
+            //we hold it now; stop counting as waiting
+            waiting_writers_.fetch_sub(1, std::memory_order_relaxed);
+        }
+ 
+        void unlock(){
+            state_.store(0, std::memory_order_release);
+        }
+};
+
+
 #endif /* LOCKS_H */

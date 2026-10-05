@@ -1,0 +1,10 @@
+# ./bench sharded:rwp shards=4096 mix=80/10/10 writers=0
+# cores=56 hwthreads=56 sockets=2 cores/socket=28 pin order: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55
+T=1         4.4 Mops/s  (4.4 4.4 4.4)
+T=2         6.0 Mops/s  (6.1 6.0 6.0)
+T=4        11.7 Mops/s  (11.6 11.7 11.7)
+T=8        22.6 Mops/s  (23.0 22.6 22.5)
+T=16       45.2 Mops/s  (45.3 44.9 45.2)
+T=32       85.7 Mops/s  (85.7 83.7 87.8)
+T=56      140.0 Mops/s  (138.4 140.0 142.9)  <- every core busy
+T=112      29.7 Mops/s  (29.7 7.4 31.7)  <- oversubscribed

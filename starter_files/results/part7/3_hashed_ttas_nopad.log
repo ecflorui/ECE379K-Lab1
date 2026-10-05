@@ -1,0 +1,11 @@
+# ./bench hashed:ttas:nopad shards=4096 mix=80/10/10 writers=0
+# cores=56 hwthreads=56 sockets=2 cores/socket=28 pin order: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55
+T=1        19.8 Mops/s  (19.8 19.6 19.8)
+T=2        14.4 Mops/s  (14.3 14.7 14.4)
+T=4        27.5 Mops/s  (27.9 27.5 27.2)
+T=8        54.3 Mops/s  (53.8 54.6 54.3)
+T=16      100.8 Mops/s  (100.8 99.3 101.8)
+T=28      167.7 Mops/s  (167.7 167.9 167.6)  <- first socket full
+T=32      187.7 Mops/s  (185.9 189.4 187.7)
+T=56      290.1 Mops/s  (290.9 286.5 290.1)  <- every core busy
+T=112      63.8 Mops/s  (63.8 73.3 21.2)  <- oversubscribed

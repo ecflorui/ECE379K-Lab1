@@ -1,0 +1,10 @@
+# perf stat -x, -D 1042 -e cycles,instructions,L1-dcache-load-misses,cache-misses -- taskset -c 0 ./bench hashed:ttas 1 4096 5
+warm-up 29 ms
+hashed:ttas    T=1   shards=4096 mix=80/10/10     75590656 ops    5000 ms     15.1 Mops/s
+event                                   count         per op
+cycles                            13235658903          175.1
+instructions                       9065367251          119.9
+L1-dcache-load-misses               231169969          3.058
+cache-misses                           489635       0.006477
+IPC (instructions/cycles)                              0.685
+# BUCKETS=524288 mean chain=1.000 DELAY=1042

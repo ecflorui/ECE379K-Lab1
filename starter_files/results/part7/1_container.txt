@@ -1,0 +1,22 @@
+# T=1 cpu=0  stripes/shards=4096  KEYS=1048576  (3 runs each)
+sharded:ttas run=1  warm-up 84 ms sharded:ttas   T=1   shards=4096 mix=80/10/10      8704000 ops    2000 ms      4.4 Mops/s 
+sharded:ttas run=2  warm-up 83 ms sharded:ttas   T=1   shards=4096 mix=80/10/10      9112576 ops    2000 ms      4.6 Mops/s 
+sharded:ttas run=3  warm-up 82 ms sharded:ttas   T=1   shards=4096 mix=80/10/10      8701952 ops    2000 ms      4.4 Mops/s 
+BUCKETS=2097152 chain=0.250 run=1  warm-up 28 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     38683648 ops    2000 ms     19.3 Mops/s 
+BUCKETS=2097152 chain=0.250 run=2  warm-up 28 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     39110656 ops    2000 ms     19.6 Mops/s 
+BUCKETS=2097152 chain=0.250 run=3  warm-up 28 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     38123520 ops    2000 ms     19.1 Mops/s 
+BUCKETS=524288 chain=1.000 run=1  warm-up 29 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     29635584 ops    2000 ms     14.8 Mops/s 
+BUCKETS=524288 chain=1.000 run=2  warm-up 28 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     29662208 ops    2000 ms     14.8 Mops/s 
+BUCKETS=524288 chain=1.000 run=3  warm-up 28 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     29687808 ops    2000 ms     14.8 Mops/s 
+BUCKETS=131072 chain=4.000 run=1  warm-up 35 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     17201152 ops    2000 ms      8.6 Mops/s 
+BUCKETS=131072 chain=4.000 run=2  warm-up 35 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     16967680 ops    2000 ms      8.5 Mops/s 
+BUCKETS=131072 chain=4.000 run=3  warm-up 35 ms hashed:ttas    T=1   shards=4096 mix=80/10/10     16953344 ops    2000 ms      8.5 Mops/s 
+BUCKETS=32768 chain=16.000 run=1  warm-up 97 ms hashed:ttas    T=1   shards=4096 mix=80/10/10      5753856 ops    2000 ms      2.9 Mops/s 
+BUCKETS=32768 chain=16.000 run=2  warm-up 96 ms hashed:ttas    T=1   shards=4096 mix=80/10/10      5746688 ops    2000 ms      2.9 Mops/s 
+BUCKETS=32768 chain=16.000 run=3  warm-up 96 ms hashed:ttas    T=1   shards=4096 mix=80/10/10      5757952 ops    2000 ms      2.9 Mops/s 
+BUCKETS=8192 chain=64.000 run=1  warm-up 630 ms hashed:ttas    T=1   shards=4096 mix=80/10/10      1897472 ops    2001 ms      0.9 Mops/s 
+BUCKETS=8192 chain=64.000 run=2  warm-up 633 ms hashed:ttas    T=1   shards=4096 mix=80/10/10      1893376 ops    2000 ms      0.9 Mops/s 
+BUCKETS=8192 chain=64.000 run=3  warm-up 628 ms hashed:ttas    T=1   shards=4096 mix=80/10/10      2073600 ops    2001 ms      1.0 Mops/s 
+BUCKETS=2048 chain=256.000 run=1  warm-up 3135 ms hashed:ttas    T=1   shards=4096 mix=80/10/10       620544 ops    2004 ms      0.3 Mops/s 
+BUCKETS=2048 chain=256.000 run=2  warm-up 3241 ms hashed:ttas    T=1   shards=4096 mix=80/10/10       541696 ops    2001 ms      0.3 Mops/s 
+BUCKETS=2048 chain=256.000 run=3  warm-up 3224 ms hashed:ttas    T=1   shards=4096 mix=80/10/10       541696 ops    2004 ms      0.3 Mops/s 

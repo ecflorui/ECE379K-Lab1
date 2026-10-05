@@ -1,0 +1,10 @@
+# perf stat -x, -D 1500 -e cycles,instructions,L1-dcache-load-misses,mem_load_l3_hit_retired.xsnp_hitm,context-switches -- taskset -c 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54 ./bench hashed:ttas:nopad 28 1024 5
+warm-up 28 ms
+hashed:ttas:nopad T=28  shards=1024 mix=80/10/10   1013492736 ops    5006 ms    202.5 Mops/s
+event                                   count         per op
+cycles                           326879607898          322.5
+instructions                     105966149297          104.6
+L1-dcache-load-misses              3698058036          3.649
+mem_load_l3_hit_retired.xsnp_hitm        812372688         0.8016
+context-switches                          398      3.927e-07
+IPC (instructions/cycles)                              0.324
